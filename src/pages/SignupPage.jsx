@@ -1,240 +1,238 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import bannerImg from '../assets/signup-banner.png'
 
 export default function SignupPage() {
   const navigate = useNavigate()
-  const [showPass, setShowPass] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [role, setRole] = useState('student')
   const [form, setForm] = useState({
-    fullName: '',
-    studentId: '',
+    studentNumber: '',
+    name: '',
+    surname: '',
+    course: '',
+    level: '',
     email: '',
-    department: '',
-    phone: '',
-    role: 'student_assistant',
+    cell: '',
     password: '',
-    confirmPassword: '',
-    agree: false
+    confirm: ''
   })
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+    setForm({...form, [e.target.name]: e.target.value})
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (form.password !== form.confirmPassword) {
+    if (form.password !== form.confirm) {
       alert("Passwords don't match")
-      return
-    }
-    if (!form.agree) {
-      alert("Please agree to terms")
       return
     }
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
-      alert(`Account created for ${form.fullName} as ${form.role}! Please login.`)
+      alert(`Account created for ${form.name} ${form.surname} as ${role}!`)
       navigate('/login')
-    }, 1500)
+    }, 1200)
   }
 
   return (
-    <div className="w-screen min-h-screen flex bg-[#F8FAFC] overflow-hidden">
-      {/* Left Panel */}
-      <div className="hidden lg:flex w-[46%] min-h-screen bg-primary relative overflow-hidden flex-col justify-between p-10">
-        <div className="absolute top-0 right-0 w-[700px] h-[700px] rounded-full bg-white/[0.06] blur-[80px] -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-secondary/20 blur-[70px] translate-y-1/3 -translate-x-1/4" />
-
-        <div className="relative z-10">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
-              <span className="text-primary font-bold text-[18px]">iC</span>
+    <div className="w-screen min-h-screen bg-[#9CC3E5] flex flex-col overflow-y-auto overflow-x-hidden font-sans">
+      {/* TOP HEADER - Register Portal */}
+      <header className="w-full h-[48px] bg-white flex items-center justify-between px-6 lg:px-10 border-b border-[#E5E7EB] shrink-0">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-[#1E5BDA] flex items-center justify-center">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
             </div>
-            <div className="flex flex-col leading-none">
-              <span className="font-display font-bold text-[18px] text-white tracking-tight">iCenter</span>
-              <span className="text-[10px] font-semibold tracking-[0.18em] text-blue-200 uppercase">DEMO</span>
-            </div>
-          </Link>
+            <p className="text-[13px] font-bold text-[#0F172A]">Register Portal</p>
+          </div>
+          <div className="hidden md:flex items-center gap-2 text-[#94A3B8]">
+            <div className="w-[500px] h-[28px] rounded-[4px] border border-[#E5E7EB] bg-[#F8FAFC]"></div>
+          </div>
         </div>
 
-        <div className="relative z-10 flex flex-col gap-8">
+        <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
+            <div className="relative">
+              <svg className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input placeholder="Search portal..." className="h-[28px] w-[160px] pl-7 pr-2 rounded-[4px] border border-[#E5E7EB] bg-white text-[11px] placeholder:text-[#94A3B8]" />
+            </div>
+            <button className="w-7 h-7 rounded-full bg-[#F8FAFC] border border-[#E5E7EB] flex items-center justify-center">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#475569" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-6 9-6 9h18s-6-2-6-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </button>
+            <button className="h-[28px] px-3 rounded-full border border-[#E5E7EB] bg-[#F8FAFC] flex items-center gap-1.5 text-[11px] font-medium text-[#0F172A]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+              Account
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* BANNER ILLUSTRATION */}
+      <div className="w-full bg-[#E0F2F1] border-b border-[#B2DFDB] relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto relative">
+          <img src={bannerImg} alt="Welcome banner" className="w-full h-[280px] object-cover" />
+          <div className="absolute inset-0 flex flex-col items-center justify-start pt-6">
+            <div className="bg-white/90 backdrop-blur rounded-[10px] shadow-lg border border-[#E2E8F0] px-6 py-3 flex flex-col items-center">
+              <p className="text-[16px] font-extrabold tracking-tight text-[#0F172A]">WELCOME!</p>
+              <p className="text-[10px] font-bold tracking-wide text-[#0F172A]">SELECT YOUR PATH</p>
+              <div className="grid grid-cols-4 gap-2 mt-3">
+                {[
+                  { label: "BROWSE COURSES", icon: "📖", color: "bg-[#1E5B5A] text-white" },
+                  { label: "REGISTER NOW", icon: "📅", color: "bg-[#F59E0B] text-white" },
+                  { label: "VIEW SCHEDULE", icon: "🗓️", color: "bg-[#E2E8F0] text-[#475569]" },
+                  { label: "GET SUPPORT", icon: "🎧", color: "bg-[#CCFBF1] text-[#0F766E]" },
+                ].map((b,i)=>(
+                  <div key={i} className={`w-[90px] h-[54px] rounded-[8px] ${b.color} flex flex-col items-center justify-center border border-black/5`}>
+                    <span className="text-[16px]">{b.icon}</span>
+                    <span className="text-[7px] font-bold tracking-wide mt-0.5 text-center leading-none">{b.label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-4 bg-white rounded-[8px] shadow-md border border-[#E2E8F0] px-4 py-2 flex items-center gap-3">
+              <p className="text-[9px] font-bold text-[#0F172A]">COURSES & REGISTRATION</p>
+              <div className="w-20 h-1 bg-[#E2E8F0] rounded-full overflow-hidden"><div className="w-2/3 h-full bg-[#1E5BDA]"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* FORM SECTION */}
+      <main className="flex-1 w-full max-w-[640px] mx-auto px-6 py-8">
+        <div className="mb-6">
+          <span className="inline-flex items-center gap-1 text-[10px] tracking-widest uppercase font-semibold text-[#1E5BDA]">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Portal Access
+          </span>
+          <h1 className="text-[18px] font-bold text-[#0F172A] mt-1">Create your account</h1>
+          <p className="text-[11px] text-[#475569] mt-1">Select your role and provide your academic details to join the portal.</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          {/* Role Toggle */}
+          <div className="grid grid-cols-2 gap-1 p-1 rounded-[4px] bg-[#E2E8F0] border border-[#CBD5E1]">
+            <button type="button" onClick={()=>setRole('student')} className={`h-[30px] rounded-[3px] text-[11px] font-medium flex items-center justify-center gap-1.5 transition-colors ${role==='student' ? 'bg-white text-[#1E5BDA] shadow-sm border border-[#E2E8F0]' : 'text-[#64748B]'}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              Student Assistant
+            </button>
+            <button type="button" onClick={()=>setRole('supervisor')} className={`h-[30px] rounded-[3px] text-[11px] font-medium flex items-center justify-center gap-1.5 transition-colors ${role==='supervisor' ? 'bg-white text-[#1E5BDA] shadow-sm border border-[#E2E8F0]' : 'text-[#64748B]'}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Supervisor
+            </button>
+          </div>
+
           <div>
-            <h1 className="font-display font-bold text-[40px] leading-[0.95] tracking-tight text-white">
-              Join 500+<br />
-              <span className="text-blue-200">assistants</span><br />
-              tracking smarter.
-            </h1>
-            <div className="mt-6 space-y-4">
-              {[
-                { t: "Setup in 2 minutes", d: "No paperwork, instant verification with university email" },
-                { t: "Free for students", d: "Full access to leave tracking and absence history" },
-                { t: "Supervisor approved", d: "Your department head gets notified automatically" },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M20 6L9 17l-5-5" /></svg>
-                  </div>
-                  <div>
-                    <p className="text-[13px] font-semibold text-white">{item.t}</p>
-                    <p className="text-[12px] text-blue-100/60 leading-snug">{item.d}</p>
-                  </div>
-                </div>
-              ))}
+            <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><span className="text-[#94A3B8]">#</span> Student Number <span className="text-[#EF4444]">*</span></label>
+            <input name="studentNumber" value={form.studentNumber} onChange={handleChange} placeholder="e.g. 202400123" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#1E5BDA]" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-[11px] font-medium text-[#0F172A]">Name <span className="text-[#EF4444]">*</span></label>
+              <input name="name" value={form.name} onChange={handleChange} placeholder="John" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] focus:outline-none focus:border-[#1E5BDA]" />
+            </div>
+            <div>
+              <label className="text-[11px] font-medium text-[#0F172A]">Surname <span className="text-[#EF4444]">*</span></label>
+              <input name="surname" value={form.surname} onChange={handleChange} placeholder="Doe" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] focus:outline-none focus:border-[#1E5BDA]" />
             </div>
           </div>
 
-          <div className="bg-white rounded-[20px] p-4 max-w-[360px] shadow-medium">
-            <div className="flex items-center justify-between mb-3">
-              <p className="text-[11px] font-bold tracking-widest uppercase text-slate-500">Onboarding Progress</p>
-              <span className="text-[11px] font-semibold text-secondary">Step 1 of 2</span>
+          <div>
+            <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Course <span className="text-[#EF4444]">*</span></label>
+            <input name="course" value={form.course} onChange={handleChange} placeholder="BSc Computer Science" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#1E5BDA]" />
+          </div>
+
+          <div>
+            <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Level of Study <span className="text-[#EF4444]">*</span></label>
+            <div className="relative mt-1">
+              <select name="level" value={form.level} onChange={handleChange} required className="w-full h-[32px] px-3 pr-8 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] focus:outline-none focus:border-[#1E5BDA] appearance-none">
+                <option value="">Select current year</option>
+                <option value="1">1st Year</option>
+                <option value="2">2nd Year</option>
+                <option value="3">3rd Year</option>
+                <option value="4">4th Year</option>
+                <option value="postgrad">Postgraduate</option>
+              </select>
+              <svg className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#475569]" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
-            <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
-              <div className="h-full w-1/2 bg-secondary rounded-full" />
+          </div>
+
+          <div>
+            <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Student Email <span className="text-[#EF4444]">*</span></label>
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="john.doe@university.edu" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#1E5BDA]" />
+          </div>
+
+          <div>
+            <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Cell Number <span className="text-[#EF4444]">*</span></label>
+            <input name="cell" value={form.cell} onChange={handleChange} placeholder="+1 (555) 000-0000" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] placeholder:text-[#94A3B8] focus:outline-none focus:border-[#1E5BDA]" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Password <span className="text-[#EF4444]">*</span></label>
+              <input name="password" type="password" value={form.password} onChange={handleChange} placeholder="•••••••" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] focus:outline-none focus:border-[#1E5BDA]" />
             </div>
-            <p className="text-[12px] text-slate-600 mt-3">You're creating your account. Next: verify email and complete profile.</p>
+            <div>
+              <label className="flex items-center gap-1 text-[11px] font-medium text-[#0F172A]"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Confirm Password <span className="text-[#EF4444]">*</span></label>
+              <input name="confirm" type="password" value={form.confirm} onChange={handleChange} placeholder="•••••••" required className="mt-1 w-full h-[32px] px-3 rounded-[4px] border border-[#CBD5E1] bg-white text-[11px] focus:outline-none focus:border-[#1E5BDA]" />
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading} className="mt-4 w-full h-[36px] rounded-[4px] bg-[#1565C0] text-white text-[11px] font-semibold flex items-center justify-center gap-2 hover:bg-[#0D47A1] disabled:opacity-60 transition-colors">
+            {loading ? 'Registering...' : <>Complete Registration <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></>}
+          </button>
+
+          <div className="border-t border-[#CBD5E1] pt-4 mt-2 flex flex-col items-center gap-2">
+            <p className="text-[9px] text-[#64748B] text-center max-w-[420px] leading-snug">
+              By clicking "Complete Registration", you agree to the EduRegister Portal Terms of Service and Privacy Policy.
+            </p>
+            <p className="text-[10px] text-[#64748B]">
+              Already have an account? <Link to="/login" className="font-semibold text-[#1E5BDA] hover:underline">Sign In</Link>
+            </p>
+          </div>
+        </form>
+      </main>
+
+      {/* HELP SECTION */}
+      <section className="w-full bg-[#9CC3E5] border-t border-[#E2E8F0] py-10">
+        <div className="max-w-[640px] mx-auto px-6 flex gap-3">
+          <div className="w-8 h-8 rounded-full bg-white border border-[#E2E8F0] flex items-center justify-center flex-shrink-0">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E5BDA" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <p className="text-[11px] font-semibold text-[#0F172A]">Need help with registration?</p>
+            <p className="text-[9px] text-[#475569] mt-1 leading-snug max-w-[420px]">If you encounter any issues with the institutional verification or cannot find your course, please reach out to our admissions helpdesk.</p>
           </div>
         </div>
+      </section>
 
-        <div className="relative z-10 text-[11px] text-blue-200/50 flex justify-between">
-          <span>© 2026 iCenter DEMO</span>
-          <span>Secure • Encrypted • FERPA Compliant</span>
-        </div>
-      </div>
-
-      {/* Right Form */}
-      <div className="flex-1 min-h-screen flex flex-col bg-white lg:bg-[#F8FAFC] overflow-y-auto">
-        <div className="lg:hidden w-full px-6 py-5 flex items-center justify-between border-b border-slate-100 bg-white sticky top-0 z-10">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center">
-              <span className="text-white font-bold text-[16px]">iC</span>
+      {/* FOOTER */}
+      <footer className="w-full bg-[#B8D0E8] border-t border-[#9CC3E5]">
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-10 py-6 flex flex-col md:flex-row justify-between gap-6 text-[9px] text-[#475569]">
+          <div>
+            <p className="font-bold text-[#0F172A] text-[10px]">© 2026 Register Portal</p>
+            <p className="mt-1 max-w-[320px] leading-snug">All rights reserved. Empowering academic institutions with seamless user management and streamlined registration workflows.</p>
+          </div>
+          <div className="flex gap-10">
+            <div>
+              <p className="font-bold tracking-widest uppercase text-[8px] text-[#64748B]">Support</p>
+              <div className="mt-2 space-y-1">
+                <p className="flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> support@register.edu</p>
+                <p className="flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> +1 (555) 012-3456</p>
+              </div>
             </div>
-            <span className="font-display font-bold text-[16px] text-primary">iCenter</span>
-          </Link>
-          <Link to="/login" className="text-[13px] font-semibold text-slate-600">Login</Link>
-        </div>
-
-        <div className="flex-1 flex items-start justify-center px-6 py-8 lg:py-10">
-          <div className="w-full max-w-[520px] flex flex-col">
-            <Link to="/" className="hidden lg:inline-flex items-center gap-2 text-[13px] font-medium text-slate-500 hover:text-primary mb-6 w-fit">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-              Back to homepage
-            </Link>
-
-            <div className="mb-6">
-              <h2 className="font-display font-bold text-[28px] tracking-tight text-primary leading-none">Create account</h2>
-              <p className="text-[14px] text-slate-500 mt-2.5">Start tracking your attendance in less than a minute</p>
+            <div>
+              <p className="font-bold tracking-widest uppercase text-[8px] text-[#64748B]">Resources</p>
+              <div className="mt-2 space-y-1">
+                <p className="flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Institutional Help Center <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></p>
+                <p className="flex items-center gap-1"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg> Privacy Policy</p>
+              </div>
             </div>
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              {/* Role */}
-              <div>
-                <label className="text-[12px] font-semibold tracking-wide uppercase text-slate-600 mb-2 block">Account Type</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {[
-                    { id: 'student_assistant', title: 'Student Assistant', desc: 'Track leave & attendance' },
-                    { id: 'supervisor', title: 'Supervisor', desc: 'Approve & manage team' },
-                  ].map(r => (
-                    <button
-                      key={r.id}
-                      type="button"
-                      onClick={() => setForm(f => ({ ...f, role: r.id }))}
-                      className={`text-left p-3.5 rounded-2xl border-2 transition-all ${form.role === r.id ? 'border-secondary bg-blue-50/50' : 'border-slate-200 bg-white hover:border-slate-300'}`}
-                    >
-                      <p className={`text-[13px] font-semibold ${form.role === r.id ? 'text-primary' : 'text-slate-700'}`}>{r.title}</p>
-                      <p className="text-[11px] text-slate-500 mt-0.5">{r.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Full Name *</label>
-                  <input name="fullName" required value={form.fullName} onChange={handleChange} placeholder="Alex Morgan" className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                </div>
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Student / Staff ID *</label>
-                  <input name="studentId" required value={form.studentId} onChange={handleChange} placeholder="SA-2026-0842" className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">University Email *</label>
-                <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="alex.morgan@university.edu" className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                <p className="text-[11px] text-slate-500 mt-1.5 ml-1">Must be your official .edu address for auto-verification</p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Department *</label>
-                  <select name="department" required value={form.department} onChange={handleChange} className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary">
-                    <option value="">Select department</option>
-                    <option>Computer Science</option>
-                    <option>Engineering</option>
-                    <option>Business School</option>
-                    <option>Library Services</option>
-                    <option>Student Affairs</option>
-                    <option>Research Lab</option>
-                    <option>Administration</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Phone (optional)</label>
-                  <input name="phone" value={form.phone} onChange={handleChange} placeholder="+1 (555) 000-0000" className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Password *</label>
-                  <div className="relative">
-                    <input name="password" type={showPass ? 'text' : 'password'} required value={form.password} onChange={handleChange} placeholder="Min. 8 characters" className="w-full h-[46px] px-4 pr-11 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <label className="text-[13px] font-medium text-slate-700 mb-1.5 block">Confirm Password *</label>
-                  <input name="confirmPassword" type="password" required value={form.confirmPassword} onChange={handleChange} placeholder="Repeat password" className="w-full h-[46px] px-4 rounded-full border border-slate-200 bg-white text-[14px] focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary" />
-                </div>
-              </div>
-
-              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-slate-600 mb-2">Password must contain:</p>
-                <div className="grid grid-cols-2 gap-1.5 text-[11px] text-slate-500">
-                  <span className={form.password.length >= 8 ? 'text-emerald-600 font-medium' : ''}>✓ 8+ characters</span>
-                  <span className={/[A-Z]/.test(form.password) ? 'text-emerald-600 font-medium' : ''}>✓ Uppercase letter</span>
-                  <span className={/[0-9]/.test(form.password) ? 'text-emerald-600 font-medium' : ''}>✓ Number</span>
-                  <span className={/[^A-Za-z0-9]/.test(form.password) ? 'text-emerald-600 font-medium' : ''}>✓ Special character</span>
-                </div>
-              </div>
-
-              <label className="flex items-start gap-2.5 cursor-pointer mt-1">
-                <input name="agree" type="checkbox" checked={form.agree} onChange={handleChange} className="mt-0.5 w-4 h-4 rounded border-slate-300 text-secondary focus:ring-secondary/20" />
-                <span className="text-[12px] leading-snug text-slate-600">I agree to the <a href="#" className="font-semibold text-primary underline">Terms of Service</a> and <a href="#" className="font-semibold text-primary underline">Privacy Policy</a>. I confirm my department and role are accurate.</span>
-              </label>
-
-              <button type="submit" disabled={loading} className="w-full h-[48px] rounded-full bg-primary text-white font-semibold text-[14px] hover:bg-primary-dark disabled:opacity-60 shadow-soft hover:shadow-medium transition-all flex items-center justify-center gap-2 mt-2">
-                {loading ? (
-                  <>
-                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Creating account...
-                  </>
-                ) : (
-                  <>Create Account →</>
-                )}
-              </button>
-
-              <p className="text-center text-[13px] text-slate-500">
-                Already have an account? <Link to="/login" className="font-semibold text-secondary hover:text-secondary-dark">Sign in</Link>
-              </p>
-            </form>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   )
 }
